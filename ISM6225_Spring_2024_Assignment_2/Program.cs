@@ -100,7 +100,21 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                int unique_count = 1;
+
+                // looping over the items of the array
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    // cheking for unique elements
+                    if (nums[i] != nums[i - 1])
+                    {
+                        nums[unique_count] = nums[i];
+                        unique_count++;
+                    }
+                }
+
+                // returning the count of uniques numbers
+                return unique_count;
             }
             catch (Exception)
             {
@@ -135,7 +149,23 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+
+                // looping over the position of elements of the array
+                for (int i = 0; i < nums.Length; i++ )
+                {
+                    // checking for 0
+                    if (nums[i] == 0)
+                    {
+                        // looping over all the remaining elements to the left
+                        for (int j  = i + 1; j < nums.Length; j++)
+                        {
+                            nums[j-1] = nums[j];
+                        }
+                        // replacing the last element with 0
+                        nums[nums.Length-1] = 0;
+                    }
+                }
+                return nums;
             }
             catch (Exception)
             {
@@ -186,7 +216,49 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                List<IList<int>> result = new List<IList<int>>();
+
+                // Sorting the array
+                Array.Sort(nums);
+
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    // To avoid duplicates, skip identical numbers
+                    if (i > 0 && nums[i] == nums[i - 1])
+                        continue;
+
+                    int left = i + 1;
+                    int right = nums.Length - 1;
+
+                    while (left < right)
+                    {
+                        int sum = nums[i] + nums[left] + nums[right];
+
+                        if (sum == 0)
+                        {
+                            result.Add(new List<int> { nums[i], nums[left], nums[right] });
+
+                            // Skip identical numbers from both ends
+                            while (left < right && nums[left] == nums[left + 1])
+                                left++;
+                            while (left < right && nums[right] == nums[right - 1])
+                                right--;
+
+                            left++;
+                            right--;
+                        }
+                        else if (sum < 0)
+                        {
+                            left++;
+                        }
+                        else
+                        {
+                            right--;
+                        }
+                    }
+                }
+
+                return result;
             }
             catch (Exception)
             {
@@ -221,7 +293,36 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                // declaring variables
+                int max_consec_ones = 0;
+                int consec_ones = 0;
+
+
+                // looping over the elemts of the array
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    // checking for 1
+                    if (nums[i] == 1)
+                    {
+                        // increasing the count of consec_ones
+                        consec_ones++;
+
+                        // assinging value for max_consec_ones if less than consec_ones 
+                        if (max_consec_ones < consec_ones)
+                        {
+                            max_consec_ones = consec_ones;
+                        }
+                    }
+
+                    else
+                    {
+                        // reducing consec_ones to 0
+                        consec_ones = 0;
+                    }
+
+                }
+                return max_consec_ones;
             }
             catch (Exception)
             {
@@ -257,7 +358,21 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                // creating variables
+                int decimalValue = 0;
+                int powerOfTwo = 1;
+
+                // creating a while loop
+                while (binary > 0)
+                {
+                    int lastDigit = binary % 10;
+                    decimalValue += lastDigit * powerOfTwo;
+                    powerOfTwo *= 2;
+                    binary /= 10;
+                }
+
+                return decimalValue;
             }
             catch (Exception)
             {
@@ -295,7 +410,25 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return 0;
+
+                // defining variables
+                int max_diff = 0;
+                int diff = 0;
+
+                // looping pver the elements of the array
+                for (int i = 1; i < nums.Length; i ++)
+                {
+                    // finding out the difference
+                    diff = nums[i] - nums[i-1];
+
+                    // checking for maximum difference
+                    if (diff > max_diff)
+                    {
+                        max_diff = diff;
+                    }
+                }
+
+                return max_diff;
             }
             catch (Exception)
             {
@@ -335,6 +468,20 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
+                Array.Sort(nums); // Sort the side lengths in non-decreasing order
+
+                // Iterate from the end to find the largest perimeter
+                for (int i = nums.Length - 1; i >= 2; i--)
+                {
+                    // Check if the sum of the two smaller side lengths is greater than the largest side length
+                    if (nums[i - 2] + nums[i - 1] > nums[i])
+                    {
+                        // If true, return the perimeter of the triangle
+                        return nums[i - 2] + nums[i - 1] + nums[i];
+                    }
+                }
+
+                // If no such triangle exists, return 0
                 return 0;
             }
             catch (Exception)
@@ -389,7 +536,17 @@ namespace ISM6225_Spring_2024_Assignment_2
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
-                return "";
+                // Repeat until no occurrence of part is found
+                while (s.Contains(part))
+                {
+                    // Find the index of the leftmost occurrence of part
+                    int index = s.IndexOf(part);
+
+                    // Remove part from s
+                    s = s.Remove(index, part.Length);
+                }
+
+                return s;
             }
             catch (Exception)
             {
